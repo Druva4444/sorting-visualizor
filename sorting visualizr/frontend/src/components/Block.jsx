@@ -3,27 +3,48 @@ import './a.css';
 
 function Block(props) {
   const [list, setList] = useState([...props.list]);
-  const [currentIndices, setCurrentIndices] = useState({ i: null, j: null }); // Track i and j
-
-  // Sort function with delay for visual effect
+  const [currentIndices, setCurrentIndices] = useState({ i: null, j: null }); 
   async function sortList() {
-    let sortedList = [...list]; // Copy the list to avoid direct mutation
+    let sortedList = [...list]; 
 
     for (let i = 0; i < sortedList.length; i++) {
       for (let j = i + 1; j < sortedList.length; j++) {
-        // Set current i and j for visualization
+
         setCurrentIndices({ i, j });
+
         
-        // Delay to visualize the comparison
-        await new Promise(resolve => setTimeout(resolve, 1)); // 100ms delay
-        
+        await new Promise(resolve => setTimeout(resolve, 1)); 
         if (sortedList[i] > sortedList[j]) {
           [sortedList[i], sortedList[j]] = [sortedList[j], sortedList[i]];
-          setList([...sortedList]); // Update the list
+          setList([...sortedList]); 
         }
       }
     }
-    setCurrentIndices({ i: null, j: null }); // Reset indices after sorting
+    setCurrentIndices({ i: null, j: null }); 
+  }
+
+ 
+  async function insertionSort() {
+    let array = [...list]; 
+
+    for (let i = 1; i < array.length; i++) {
+      let current = array[i];
+      let j = i - 1;
+
+      setCurrentIndices({ i, j });
+      while (j >= 0 && array[j] > current) {
+        array[j + 1] = array[j]; 
+        setList([...array]); 
+        await new Promise(resolve => setTimeout(resolve, 1)); 
+        j--;
+        setCurrentIndices({ i, j }); 
+      }
+
+      array[j + 1] = current;
+      setList([...array]); 
+    }
+
+    setCurrentIndices({ i: null, j: null });
   }
 
   return (
@@ -32,7 +53,7 @@ function Block(props) {
         {list.map((val, index) => {
           let backgroundColor = 'yellow';
           if (index === currentIndices.i) backgroundColor = 'blue'; // Color for `i`
-          if (index === currentIndices.j) backgroundColor = 'green'; // Color for `j`
+          if (index === currentIndices.j) backgroundColor = 'green'; 
 
           return (
             <div
@@ -42,14 +63,16 @@ function Block(props) {
                 height: val + 'px',
                 border: '0.5px solid black',
                 width: '10px',
-                margin: '1px'
+                margin: '1px',
               }}
               key={index}
             ></div>
           );
         })}
       </div>
-      <button onClick={sortList}>Sort</button>
+      
+      <button onClick={sortList}>Bubble Sort</button>
+      <button onClick={insertionSort}>Insertion Sort</button>
     </>
   );
 }

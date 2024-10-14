@@ -18,7 +18,10 @@ for(let i=1;i<=100;i++){
 list.push(i)
 }
 list=shuffleArray(list)
-  return(<><Block list={list}/></>)
+  return(<><Block list={list}/>
+  <Block list={list} sort ='insertion'/>
+  <Block list={list}/>
+  </>)
 }
 
 export default App
